@@ -1,0 +1,3 @@
+[submodule "example/addons/gamejolt_api"]
+	path = example/addons/gamejolt_api
+	url = https://github.com/deakcor/-godot-gj-api.git
