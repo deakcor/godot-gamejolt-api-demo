@@ -9,12 +9,12 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Node",
+"base": "AuthTemplate",
 "class": "Auth",
 "language": "GDScript",
 "path": "res://script/auth.gd"
 }, {
-"base": "Node",
+"base": "Reference",
 "class": "AuthTemplate",
 "language": "GDScript",
 "path": "res://script/auth_template.gd"
@@ -39,7 +39,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "gamejolt_api_v2" )
+enabled=PoolStringArray( "res://addons/gamejolt_api/src/plugin.cfg" )
 
 [rendering]
 

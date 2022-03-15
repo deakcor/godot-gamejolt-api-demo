@@ -1,6 +1,5 @@
-extends Node
-
-#copy this template file into a auth.gd in the same folder and name the class 'Auth'
+# Create a class which extend this one and name it Auth
+# Then in this new class, in the _init(), set the right key and id 
 
 class_name AuthTemplate
 
