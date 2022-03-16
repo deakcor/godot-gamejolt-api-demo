@@ -26,14 +26,15 @@ var wait_update:=false
 var auth = Auth.new()
 
 func _ready():
-	log_text.set_text("")
-	#use your private key and game id
+	log_text.bbcode_text = ""
+	#use your private key and game id from your auth class
 	gj.init(auth.private_key,auth.game_id)
+	gj.verbose = true
 	gj.connect("gamejolt_request_completed",self,"_gj_completed")
 	get_viewport().connect("size_changed",self,"_vp_size_changed")
 	
-func _gj_completed(type,message,finished):
-	log_text.text+="\n"+type+str(message)+"\n"
+func _gj_completed(type:String,message:Dictionary):
+	log_text.append_bbcode("\n[color=#ffffff]"+type+"[/color]\n"+str(message)+"\n\n")
 	if type=="/sessions/open/":
 		if message["success"]:
 			# You well logged
@@ -49,7 +50,6 @@ func _gj_completed(type,message,finished):
 			# fetched scores
 			var i=0
 			ld_text.set_text("")
-			print(message["scores"])
 			while message["scores"].size()>i:
 				ld_text.text+="\n"+str(i+1)+") "+message["scores"][i]["user"]+" : "+message["scores"][i]["score"]
 				i+=1
@@ -96,16 +96,13 @@ func _gj_completed(type,message,finished):
 		if message["success"]:
 			#fetched trophies
 			for k in message["trophies"]:
-				print(k["achieved"])
-				if k["achieved"]!="false":
+				if k["achieved"] is String:
 					trophy.append(k["id"])
 					trophies.text+=k["title"]+" :UNLOCKED\n"
 					if k["id"]=="104280":
 						button_trophy.text="Already Unlocked"
 						button_trophy.disabled=true
 		print(trophy)
-		
-	print("finished: "+str(finished))
 
 func _on_auto_auth_pressed():
 	gj.auto_auth()
