@@ -143,7 +143,7 @@ custom_constants/separation = 16
 [node name="text" type="Label" parent="scroll_container/container/score/container"]
 margin_right = 308.0
 margin_bottom = 22.0
-text = "Score"
+text = "Your score"
 
 [node name="score_button" type="Button" parent="scroll_container/container/score/container"]
 margin_top = 38.0

@@ -120,7 +120,7 @@ func _gj_completed(type:String,message:Dictionary):
 					if k["id"]=="104280":
 						button_trophy.text="Already Unlocked"
 						button_trophy.disabled=true
-					new_trophy.init(k.get("image_url",""),k.get("title",""),k.get("description",""),k["achieved"])
+					new_trophy.init(k.get("image_url",""),k.get("title",""),k.get("description",""),k["difficulty"],k["achieved"])
 				else:
 					new_trophy.init("","Hidden","Click more to activate")
 				
