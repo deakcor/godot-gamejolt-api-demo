@@ -7,6 +7,7 @@ onready var gj:=$gj
 onready var container:=$scroll_container/container
 onready var log_text:=container.get_node("cont_log/log_text")
 onready var score_text:=container.get_node("score/container/score_text")
+onready var score_text_saving:=container.get_node("score/container/score_text_saving")
 onready var ld_text:=container.get_node("Leaderboard/container/text_ld")
 onready var welcome_text:=container.get_node("auth/welcome_text")
 onready var trophies_container:=container.get_node("trophy/container/ScrollContainer/trophies_container")
@@ -62,7 +63,8 @@ func _gj_completed(type:String,message:Dictionary):
 			# added scores
 			last_score=score
 			gj.set_data("score", score, false)
-			score_text.set_text("Your score : "+str(score)+"\nSaved!")
+			score_text.set_text("Your score : "+str(score))
+			score_text_saving.text = "Saved!"
 			if score>9 and trophy.find(104281)==-1:
 				gj.set_trophy_achieved(104281)
 				trophy.append(104281)
@@ -133,7 +135,8 @@ func _on_auth_token_text_changed(new_text):
 
 func _on_Button_pressed():
 	score+=1
-	score_text.set_text("Your score : "+str(last_score)+"+"+str(score-last_score)+"\nNot saved")
+	score_text.set_text("Your score : "+str(last_score)+"+"+str(score-last_score))
+	score_text_saving.text = "Saving..."
 	if !wait_update:
 		wait_update=true
 		gj.add_score(str(score)+" times", score, 405532)

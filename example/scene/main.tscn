@@ -133,14 +133,21 @@ text = "Score"
 [node name="score_button" type="Button" parent="scroll_container/container/score/container"]
 margin_top = 38.0
 margin_right = 308.0
-margin_bottom = 60.0
+margin_bottom = 180.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 disabled = true
 text = "Add +1 to score"
 
 [node name="score_text" type="Label" parent="scroll_container/container/score/container"]
-margin_top = 76.0
+margin_top = 196.0
 margin_right = 308.0
-margin_bottom = 98.0
+margin_bottom = 218.0
+
+[node name="score_text_saving" type="Label" parent="scroll_container/container/score/container"]
+margin_top = 234.0
+margin_right = 308.0
+margin_bottom = 256.0
 
 [node name="trophy" type="PanelContainer" parent="scroll_container/container"]
 margin_left = 672.0
@@ -159,7 +166,7 @@ custom_constants/separation = 16
 [node name="text" type="Label" parent="scroll_container/container/trophy/container"]
 margin_right = 308.0
 margin_bottom = 22.0
-text = "Trophy"
+text = "Your trophy"
 
 [node name="button_trophy" type="Button" parent="scroll_container/container/trophy/container"]
 margin_top = 38.0
