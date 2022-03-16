@@ -219,9 +219,11 @@ margin_top = 4.0
 margin_right = 314.0
 margin_bottom = 260.0
 rect_min_size = Vector2( 0, 200 )
+focus_mode = 2
 text = "
 "
 scroll_following = true
+selection_enabled = true
 
 [connection signal="pressed" from="scroll_container/container/auth/noauth/auto_auth" to="." method="_on_auto_auth_pressed"]
 [connection signal="text_changed" from="scroll_container/container/auth/noauth/auth_name" to="." method="_on_auth_name_text_changed"]

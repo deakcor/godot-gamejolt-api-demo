@@ -29,7 +29,7 @@ func _ready():
 	log_text.bbcode_text = ""
 	#use your private key and game id from your auth class
 	gj.init(auth.private_key,auth.game_id)
-	gj.verbose = true
+	#gj.verbose = true
 	gj.connect("gamejolt_request_completed",self,"_gj_completed")
 	get_viewport().connect("size_changed",self,"_vp_size_changed")
 	
@@ -102,7 +102,6 @@ func _gj_completed(type:String,message:Dictionary):
 					if k["id"]=="104280":
 						button_trophy.text="Already Unlocked"
 						button_trophy.disabled=true
-		print(trophy)
 
 func _on_auto_auth_pressed():
 	gj.auto_auth()
