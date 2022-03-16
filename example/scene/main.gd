@@ -6,10 +6,12 @@ extends Control
 onready var gj:=$gj
 onready var container:=$scroll_container/container
 onready var log_text:=container.get_node("cont_log/log_text")
-onready var score_text:=container.get_node("score/container/score_text")
+onready var score_text:=container.get_node("score/container/HBoxContainer/PanelContainer/VBoxContainer/score_text")
+onready var rank_text:=container.get_node("score/container/HBoxContainer/PanelContainer2/VBoxContainer2/rank_text")
 onready var score_text_saving:=container.get_node("score/container/score_text_saving")
 onready var user_cont:=container.get_node("Leaderboard/container/ScrollContainer/user_cont")
-onready var welcome_text:=container.get_node("auth/welcome_text")
+onready var auth_cont:=container.get_node("auth/auth_cont")
+onready var welcome_text:=container.get_node("auth/auth_cont/welcome_text")
 onready var trophies_container:=container.get_node("trophy/container/ScrollContainer/trophies_container")
 onready var button_trophy:=container.get_node("trophy/container/button_trophy")
 
@@ -44,12 +46,13 @@ func _gj_completed(type:String,message:Dictionary):
 		if message["success"]:
 			# You well logged
 			no_auth_cont.visible=false
+			auth_cont.visible=true
 			welcome_text.set_text("Welcome, "+gj.get_username())
-			gj.fetch_global_scores(8, 405532, 0, null)
+			gj.fetch_global_scores(10, 405532, 0)
 			gj.fetch_data("score", false)
-			gj.fetch_trophy(null, null)
+			gj.fetch_trophy()
 			score_text.set_text("Loading your score...")
-			
+			rank_text.set_text("Loading your rank...")
 	elif type=="/scores/":
 		if message["success"]:
 			# fetched scores
@@ -57,7 +60,6 @@ func _gj_completed(type:String,message:Dictionary):
 			for k in user_cont.get_children():
 				k.queue_free()
 			while message["scores"].size()>i:
-				print(message["scores"][i])
 				var new_user := preload("res://scene/user.tscn").instance()
 				new_user.init(i+1,message["scores"][i]["user"],message["scores"][i]["score"])
 				user_cont.add_child(new_user)
@@ -67,7 +69,7 @@ func _gj_completed(type:String,message:Dictionary):
 			# added scores
 			last_score=score
 			gj.set_data("score", score, false)
-			score_text.set_text("Your score : "+str(score))
+			score_text.set_text(str(score))
 			score_text_saving.text = "Saved!"
 			if score>9 and trophy.find(104281)==-1:
 				gj.set_trophy_achieved(104281)
@@ -87,7 +89,7 @@ func _gj_completed(type:String,message:Dictionary):
 			if score>999999 and trophy.find(104347)==-1:
 				gj.set_trophy_achieved(104347)
 				trophy.append(104347)
-			gj.fetch_global_scores(8, 405532, 0, null)
+			gj.fetch_global_scores(10, 405532, 0)
 		wait_update=false
 	elif type=="/data-store/":
 		if message["success"]:
@@ -95,11 +97,14 @@ func _gj_completed(type:String,message:Dictionary):
 			score=int(message["data"])
 			last_score=score
 		score_button.disabled=false
-		score_text.set_text("Your score : "+str(score))
+		score_text.set_text(str(score))
+		gj.fetch_score_rank(last_score,405532)
 	elif type=="/data-store/set/":
 		if message["success"]:
-			#You well stored your data
-			pass
+			gj.fetch_score_rank(last_score,405532)
+	elif type=="/scores/get_rank/":
+		if message["success"]:
+			rank_text.text = str(message.get("rank",0))
 	elif type=="/trophies/":
 		button_trophy.disabled=false
 		for k in trophies_container.get_children():
@@ -139,7 +144,7 @@ func _on_auth_token_text_changed(new_text):
 
 func _on_Button_pressed():
 	score+=1
-	score_text.set_text("Your score : "+str(last_score)+"+"+str(score-last_score))
+	score_text.set_text(str(last_score)+"+"+str(score-last_score))
 	score_text_saving.text = "Saving..."
 	if !wait_update:
 		wait_update=true
