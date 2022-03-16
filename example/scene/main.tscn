@@ -208,11 +208,19 @@ margin_right = 308.0
 margin_bottom = 22.0
 text = "The clicker champions"
 
-[node name="text_ld" type="Label" parent="scroll_container/container/Leaderboard/container"]
+[node name="ScrollContainer" type="ScrollContainer" parent="scroll_container/container/Leaderboard/container"]
 margin_top = 38.0
 margin_right = 308.0
-margin_bottom = 60.0
-autowrap = true
+margin_bottom = 256.0
+rect_min_size = Vector2( 0, 100 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="user_cont" type="VBoxContainer" parent="scroll_container/container/Leaderboard/container/ScrollContainer"]
+margin_right = 308.0
+margin_bottom = 218.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="Control" type="Control" parent="scroll_container/container"]
 margin_left = 336.0

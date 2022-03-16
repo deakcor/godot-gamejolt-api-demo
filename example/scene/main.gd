@@ -8,7 +8,7 @@ onready var container:=$scroll_container/container
 onready var log_text:=container.get_node("cont_log/log_text")
 onready var score_text:=container.get_node("score/container/score_text")
 onready var score_text_saving:=container.get_node("score/container/score_text_saving")
-onready var ld_text:=container.get_node("Leaderboard/container/text_ld")
+onready var user_cont:=container.get_node("Leaderboard/container/ScrollContainer/user_cont")
 onready var welcome_text:=container.get_node("auth/welcome_text")
 onready var trophies_container:=container.get_node("trophy/container/ScrollContainer/trophies_container")
 onready var button_trophy:=container.get_node("trophy/container/button_trophy")
@@ -54,9 +54,13 @@ func _gj_completed(type:String,message:Dictionary):
 		if message["success"]:
 			# fetched scores
 			var i=0
-			ld_text.set_text("")
+			for k in user_cont.get_children():
+				k.queue_free()
 			while message["scores"].size()>i:
-				ld_text.text+="\n"+str(i+1)+") "+message["scores"][i]["user"]+" : "+message["scores"][i]["score"]
+				print(message["scores"][i])
+				var new_user := preload("res://scene/user.tscn").instance()
+				new_user.init(i+1,message["scores"][i]["user"],message["scores"][i]["score"])
+				user_cont.add_child(new_user)
 				i+=1
 	elif type=='/scores/add/':
 		if message["success"]:
