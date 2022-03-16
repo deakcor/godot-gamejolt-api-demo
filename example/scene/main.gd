@@ -9,13 +9,12 @@ onready var log_text:=container.get_node("cont_log/log_text")
 onready var score_text:=container.get_node("score/container/score_text")
 onready var ld_text:=container.get_node("Leaderboard/container/text_ld")
 onready var welcome_text:=container.get_node("auth/welcome_text")
-onready var trophies:=container.get_node("trophy/container/trophies")
+onready var trophies_container:=container.get_node("trophy/container/ScrollContainer/trophies_container")
 onready var button_trophy:=container.get_node("trophy/container/button_trophy")
 
 onready var no_auth_cont:=container.get_node("auth/noauth")
 onready var score_button:=container.get_node("score/container/score_button")
-var username:String
-var token:String
+
 var score:=0
 var last_score:=0
 var trophy:=[]
@@ -33,6 +32,11 @@ func _ready():
 	gj.connect("gamejolt_request_completed",self,"_gj_completed")
 	get_viewport().connect("size_changed",self,"_vp_size_changed")
 	
+	# if it's editor, auth for debugging
+	if OS.has_feature("editor"):
+		gj.auth_user(auth.username, auth.token)
+		gj.open_session()
+		
 func _gj_completed(type:String,message:Dictionary):
 	log_text.append_bbcode("\n[color=#ffffff]"+type+"[/color]\n"+str(message)+"\n\n")
 	if type=="/sessions/open/":
@@ -92,16 +96,23 @@ func _gj_completed(type:String,message:Dictionary):
 			pass
 	elif type=="/trophies/":
 		button_trophy.disabled=false
-		trophies.text=""
+		for k in trophies_container.get_children():
+			k.queue_free()
 		if message["success"]:
 			#fetched trophies
 			for k in message["trophies"]:
+				
+				var new_trophy := preload("res://scene/trophy.tscn").instance()
+				trophies_container.add_child(new_trophy)
 				if k["achieved"] is String:
 					trophy.append(k["id"])
-					trophies.text+=k["title"]+" :UNLOCKED\n"
 					if k["id"]=="104280":
 						button_trophy.text="Already Unlocked"
 						button_trophy.disabled=true
+					new_trophy.init(k.get("image_url",""),k.get("title",""),k.get("description",""),k["achieved"])
+				else:
+					new_trophy.init("","Hidden","Click more to activate")
+				
 
 func _on_auto_auth_pressed():
 	gj.auto_auth()
@@ -109,15 +120,15 @@ func _on_auto_auth_pressed():
 
 
 func _on_normal_auth_pressed():
-	gj.auth_user(username, token)
+	gj.auth_user(auth.username, auth.token)
 	gj.open_session()
 
 func _on_auth_name_text_changed(new_text):
-	username=new_text
+	auth.username=new_text
 
 
 func _on_auth_token_text_changed(new_text):
-	token=new_text
+	auth.token=new_text
 
 
 func _on_Button_pressed():

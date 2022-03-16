@@ -168,10 +168,19 @@ margin_bottom = 60.0
 disabled = true
 text = "add me a trophy"
 
-[node name="trophies" type="Label" parent="scroll_container/container/trophy/container"]
+[node name="ScrollContainer" type="ScrollContainer" parent="scroll_container/container/trophy/container"]
 margin_top = 76.0
 margin_right = 308.0
-margin_bottom = 98.0
+margin_bottom = 256.0
+rect_min_size = Vector2( 0, 100 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="trophies_container" type="VBoxContainer" parent="scroll_container/container/trophy/container/ScrollContainer"]
+margin_right = 308.0
+margin_bottom = 180.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="Leaderboard" type="PanelContainer" parent="scroll_container/container"]
 margin_top = 280.0
