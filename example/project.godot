@@ -26,7 +26,8 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Godot API demo"
+config/name="Godot GJ API demo"
+config/description="Demo for Godot GameJolt API"
 run/main_scene="res://scene/main.tscn"
 boot_splash/image="res://fond.png"
 config/icon="res://icon.png"
